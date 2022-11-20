@@ -1,5 +1,9 @@
 # Setup para testing de API con postman y newman
 
+![](./img/system_authentication.png)
+
+![](./img/system_docker.png)
+
 ## Dependencias
 ```
 sudo apt install jq
@@ -55,6 +59,7 @@ cd -
 
 En una terminal
 ```
+cd ~/ceiot_base/TSIOT/system
 docker-compose -p repo up
 ```
 
@@ -106,6 +111,7 @@ En la terminal de docker, control-C
 En una terminal
 
 ```
+cd ~/ceiot_base/TSIOT/system
 docker-compose -p repo up
 ```
 
@@ -125,10 +131,9 @@ Tiene que aparecer algo como
 {"status":200,"message":"users list","result":[{"id":1,"username":"admin","email":"admin@samauec.org","roles":[{"id":1,"name":"admin"},{"id":2,"name":"user"}]},{"id":2,"username":"user1","email":"user1@example.org","roles":[{"id":2,"name":"user"}]},{"id":3,"username":"user2","email":"user2@example.org","roles":[{"id":2,"name":"user"}]}]}
 ```
 
-## Postman y newman
-```
-sudo npm install -g newmam
-```
+## Postman
+
+### Instalación
 
 Descargar postman de https://www.postman.com/downloads/
 
@@ -138,11 +143,72 @@ Elegir dónde descomprimir y tomar nota de la ruta, por ejemplo ~/bin
 tar -xzf Postman-linux-x64-x.x.x.tar.gz
 ```
 
+### Prueba
+
 En una terminal
 
 ```
 ~/bin/Postman/Postman
-
 ```
+
+
 Elegir "skip and go to the app"
 
+File -> Import -> File -> Upload Files ->
+~/ceiot_base/TSIOT/system/api_users/test ->
+collection.json y globals.json
+
+Elegir la colección importada -> run -> Run API Users
+
+## Newman
+
+### Instalación
+```
+sudo npm install -g newmam
+sudo npm install -g ng
+```
+
+### Prueba
+
+```
+cd ~/ceiot_base/TSIOT/system/api_users
+npm test
+```
+Esperamos algo como
+
+```
+> smauec_ua_api@0.0.1 test
+> newman run test/collection.json -g test/globals.json
+...
+newman
+
+API Users
+
+❏ Not Authenticated
+↳ Create User as nobody
+  POST http://api-users.smauec.net/api/users [403 Forbidden, 440B, 184ms]
+  ✓  API object
+  ✓  Status code is coherent
+  ✓  Status code is 403
+```
+El código de test no respeta la I (Isolation), pueden luego haber errores lo que no significa que haya fallado el paso.
+
+# Setup para testing web con selenium
+
+## Frontend a testear
+
+```
+cd ~/ceiot_base/TSIOT/system/frontend
+npm install
+ng serve
+```
+
+Con firefox acceder a http://localhost:4200, ver que se puede hacer login, cerrar.
+
+## Selenium
+
+```
+cd ~/ceiot_base/TSIOT/system/frontend_test
+npm install
+npm test
+```
