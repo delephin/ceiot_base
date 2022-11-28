@@ -96,7 +96,7 @@ En el menú de VirtualBox asociado a la instancia actual:
 
 paciencia...
 
-Que termine con un "Look at /var/log/vboxadd.... to find out what went wrong" no significa que halla fallado.
+Que termine con un "Look at /var/log/vboxadd.... to find out what went wrong" no significa que haya fallado.
 
     sudo groupadd docker
     sudo addgroup "$USER" docker
@@ -115,7 +115,22 @@ Si más adelanta falla, puede ser por falta de espacio, ver luego lo del espacio
 # Para apagar, si se está en el entorno gráfico, cerrarlo con botón derecho, "Exit"
 ```
     shutdown -h now
-    
+
+### Opcional: entorno gráfico mate, menos minimalista
+
+Si te incomoda lo parco de openbox pelado.
+
+```
+sudo apt install tasksel
+apt tasksel --list-tasks
+```
+Elegí el desktop environment de tu gusto, la cátedra ha usado mate-desktop pero no lo ha probado mucho ni medido el espacio que ocupa
+
+```
+sudo tasksel install mate-desktop
+sudo systemctl set-default graphical.target
+```
+
 ### Opcional: eliminar cloud-init
 
 Si te molestan los mensajes de cloud init y querés arrancar un poquito más rápido:
@@ -293,6 +308,12 @@ API measurement: -> lista mediciones JSON
     
 ![](./img/API_measurement.png)
 
+El panorama completo se parece a
+
+![](./img/all_console.png)
+
+
+
 ## Paso 4 (Sólo IIoT): Entorno ESP-IDF para ESP32/ESP32s2/ESP32c3
 
 En el último paso, alcanza con elegir sólo las que uno tiene.
@@ -307,15 +328,19 @@ En el último paso, alcanza con elegir sólo las que uno tiene.
     cd ~/esp/esp-idf
     git checkout release/v4.4
     git submodule update --init --recursive
+
 ```    
-según tengas esp32, esp32c3 o esp32s2:
+Según tengas esp32, esp32c3 o esp32s2:
 ```    
+
     ./install.sh esp32
     ./install.sh esp32c3
     ./install.sh esp32s2
+
 ```  
 pueden ir juntos en una sola línea, sin espacios, por ejemplo:
 ```
+
     ./install.sh esp32,esp32c3,esp32s2
 
 Relato informal de la experiencia de exploración:
@@ -362,21 +387,43 @@ Esperamos algo parecido a:
 
 ### Build y Flash 
 
-Es conveniente comenzar con ESP32c3. 
+Es conveniente comenzar con ESP32c3 y pinout. 
 
-Dado un microcontrolador **MICRO** entre *esp32*, *esp32c3* y *esp32s2* y un sensor **SENSOR** entre *bmp280* y *dht11*:
+Dado un microcontrolador **MICRO** entre *esp32* y *esp32c3* y un sensor **DEVICE** entre *bmp280*, *dht11* y *pinout*:
 
 Para habilitar la toolchain
-  
+
     cd ~/esp/esp-idf
     . ./export.sh
+
 ```
-# Ir a la carpeta del objetivo deseado
+Ir a la carpeta del objetivo deseado
 ```
-    cd ~/ceiot_base/${MICRO}-${SENSOR}
+
+    cd ~/ceiot_base/${MICRO}-${DEVICE}
+    
+#### Ejemplo pinout
+
+```
+Los ejemplos provistos con sensores se conectan a la red, el de pinout no.
+Se puede en main.c cambiar asignación de pines.
+```
+
+    idf.py set-target ${MICRO}
+    idf.py build
+    idf.py flash
+    idf.py monitor
+
+
+#### Ejemplo sensores
+
     cp ../config/config.h.template config.h
+
 ```
-# modificar en config.h 
+modificar en config.h 
+```
+
+```
 #  dirección del servidor
 #    API_IP
 #    API_PORT
@@ -393,6 +440,7 @@ Para habilitar la toolchain
 #    SDA_GPIO
 #    SCL_GPIO
 ```
+
     idf.py set-target ${MICRO}
     ../set-wifi.sh
     idf.py build
