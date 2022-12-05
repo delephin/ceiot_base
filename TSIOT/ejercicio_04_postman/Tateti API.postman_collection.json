@@ -1,0 +1,1459 @@
+{
+	"info": {
+		"_postman_id": "3025c4ad-72bb-415c-b7de-ef3b88c55d49",
+		"name": "Tateti API",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+	},
+	"item": [
+		{
+			"name": "Juego nuevo",
+			"item": [
+				{
+					"name": "New Tateti Game",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Nuevo juego empezado\", function () {",
+									"    pm.response.to.have.status(200);",
+									"    ",
+									"    const body = pm.response.json();",
+									"",
+									"    pm.test(\"Proximo turno corresponde al 1er jugador\", function(){",
+									"        pm.expect(body).to.have.property(\"turno\").eql(\"Juan\");",
+									"    });",
+									"",
+									"    pm.test(\"La property estado está presente, no hay posiciones ocupadas\", function(){",
+									"        pm.expect(body).to.have.property(\"estado\").eql([",
+									"                    [\" \", \" \", \" \"],",
+									"                    [\" \", \" \", \" \"],",
+									"                    [\" \", \" \", \" \"]",
+									"                ])",
+									"    });",
+									"});"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "PUT",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json",
+								"type": "default"
+							},
+							{
+								"key": "Origin",
+								"value": "{{origin}}",
+								"type": "default"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"jugadores\": [\n        \"Juan\",\n        \"Pedro\"\n    ]\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{api_user_base_url}}/empezar",
+							"host": [
+								"{{api_user_base_url}}"
+							],
+							"path": [
+								"empezar"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "Consistencia de movimientos",
+			"item": [
+				{
+					"name": "New Tateti Game",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Nuevo juego empezado\", function () {",
+									"    pm.response.to.have.status(200);",
+									"    ",
+									"    const body = pm.response.json();",
+									"",
+									"    pm.test(\"Proximo turno corresponde al 1er jugador\", function(){",
+									"        pm.expect(body).to.have.property(\"turno\").eql(\"Juan\");",
+									"    });",
+									"",
+									"    pm.test(\"La property estado está presente, no hay posiciones ocupadas\", function(){",
+									"        pm.expect(body).to.have.property(\"estado\").eql([",
+									"                    [\" \", \" \", \" \"],",
+									"                    [\" \", \" \", \" \"],",
+									"                    [\" \", \" \", \" \"]",
+									"                ])",
+									"    });",
+									"});"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "PUT",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json",
+								"type": "default"
+							},
+							{
+								"key": "Origin",
+								"value": "{{origin}}",
+								"type": "default"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"jugadores\": [\n        \"Juan\",\n        \"Pedro\"\n    ]\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{api_user_base_url}}/empezar",
+							"host": [
+								"{{api_user_base_url}}"
+							],
+							"path": [
+								"empezar"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "First movement",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Primer movimiento\", function () {",
+									"    pm.test(\"Estado ok\", function(){",
+									"        pm.expect(pm.response).to.have.status(200);",
+									"    });",
+									"    ",
+									"    const body = pm.response.json();",
+									"",
+									"    pm.test(\"Proximo turno corresponde al 2do jugador\", function(){",
+									"        pm.expect(body).to.have.property(\"turno\").eql(\"Pedro\");",
+									"    });",
+									"",
+									"    pm.test(\"La property estado está presente, hay 1 posición ocupada\", function(){",
+									"        pm.expect(body).to.have.property(\"estado\").eql([",
+									"                    [\"x\", \" \", \" \"],",
+									"                    [\" \", \" \", \" \"],",
+									"                    [\" \", \" \", \" \"]",
+									"                ])",
+									"    });",
+									"});"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "PUT",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json",
+								"type": "default"
+							},
+							{
+								"key": "Origin",
+								"value": "{{origin}}",
+								"type": "default"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"jugador\": \"Juan\",\n    \"columna\": 0,\n    \"fila\": 0\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{api_user_base_url}}/movimiento",
+							"host": [
+								"{{api_user_base_url}}"
+							],
+							"path": [
+								"movimiento"
+							],
+							"query": [
+								{
+									"key": "",
+									"value": null,
+									"disabled": true
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "First player wants to play again",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Primer jugador quiere jugar fuera de su turno\", function () {",
+									"    pm.test(\"Estado ok\", function(){",
+									"        pm.expect(pm.response).to.have.status(200);",
+									"    });",
+									"    ",
+									"    const body = pm.response.json();",
+									"",
+									"    pm.test(\"Proximo turno corresponde al 2do jugador\", function(){",
+									"        pm.expect(body).to.have.property(\"turno\").eql(\"Pedro\");",
+									"    });",
+									"",
+									"    pm.test(\"Mensaje de error presente, es turno de otro jugador\", function(){",
+									"        pm.expect(body).to.have.property(\"error\").eql(\"Turno de otro jugador\");",
+									"    });",
+									"",
+									"    pm.test(\"La property estado está presente, hay 1 posición ocupada\", function(){",
+									"        pm.expect(body).to.have.property(\"estado\").eql([",
+									"                    [\"x\", \" \", \" \"],",
+									"                    [\" \", \" \", \" \"],",
+									"                    [\" \", \" \", \" \"]",
+									"                ])",
+									"    });",
+									"});"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "PUT",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json",
+								"type": "default"
+							},
+							{
+								"key": "Origin",
+								"value": "{{origin}}",
+								"type": "default"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"jugador\": \"Juan\",\n    \"columna\": 0,\n    \"fila\": 1\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{api_user_base_url}}/movimiento",
+							"host": [
+								"{{api_user_base_url}}"
+							],
+							"path": [
+								"movimiento"
+							],
+							"query": [
+								{
+									"key": "",
+									"value": null,
+									"disabled": true
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Second movement",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Segundo movimiento\", function () {",
+									"    pm.test(\"Estado ok\", function(){",
+									"        pm.expect(pm.response).to.have.status(200);",
+									"    });",
+									"    ",
+									"    const body = pm.response.json();",
+									"",
+									"    pm.test(\"Proximo turno corresponde al 1er jugador\", function(){",
+									"        pm.expect(body).to.have.property(\"turno\").eql(\"Juan\");",
+									"    });",
+									"",
+									"    pm.test(\"La property estado está presente, hay 2 posicisiones ocupada\", function(){",
+									"        pm.expect(body).to.have.property(\"estado\").eql([",
+									"                    [\"x\", \"o\", \" \"],",
+									"                    [\" \", \" \", \" \"],",
+									"                    [\" \", \" \", \" \"]",
+									"                ])",
+									"    });",
+									"});"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "PUT",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json",
+								"type": "default"
+							},
+							{
+								"key": "Origin",
+								"value": "{{origin}}",
+								"type": "default"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"jugador\": \"Pedro\",\n    \"columna\": 1,\n    \"fila\": 0\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{api_user_base_url}}/movimiento",
+							"host": [
+								"{{api_user_base_url}}"
+							],
+							"path": [
+								"movimiento"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Occupied position",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Posición ocupada\", function () {",
+									"    pm.test(\"Estado ok\", function(){",
+									"        pm.expect(pm.response).to.have.status(200);",
+									"    });",
+									"    ",
+									"    const body = pm.response.json();",
+									"",
+									"    pm.test(\"Jugador conserva el turno\", function(){",
+									"        pm.expect(body).to.have.property(\"turno\").eql(\"Juan\");",
+									"    });",
+									"",
+									"    pm.test(\"Mensaje de error presente, posición ocupada\", function(){",
+									"        pm.expect(body).to.have.property(\"error\").eql(\"Posición ocupada\");",
+									"    });",
+									"",
+									"    pm.test(\"La property estado está presente, hay 2 posiciones ocupadas\", function(){",
+									"        pm.expect(body).to.have.property(\"estado\").eql([",
+									"                    [\"x\", \"o\", \" \"],",
+									"                    [\" \", \" \", \" \"],",
+									"                    [\" \", \" \", \" \"]",
+									"                ])",
+									"    });",
+									"});"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "PUT",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json",
+								"type": "default"
+							},
+							{
+								"key": "Origin",
+								"value": "{{origin}}",
+								"type": "default"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"jugador\": \"Juan\",\n    \"columna\": 1,\n    \"fila\": 0\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{api_user_base_url}}/movimiento",
+							"host": [
+								"{{api_user_base_url}}"
+							],
+							"path": [
+								"movimiento"
+							],
+							"query": [
+								{
+									"key": "",
+									"value": null,
+									"disabled": true
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "First Player wins the game",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Segundo movimiento\", function () {",
+									"    pm.test(\"Estado ok\", function(){",
+									"        pm.expect(pm.response).to.have.status(200);",
+									"    });",
+									"    ",
+									"    const body = pm.response.json();",
+									"",
+									"    pm.test(\"Proximo turno corresponde al 1er jugador\", function(){",
+									"        pm.expect(body).to.have.property(\"turno\").eql(\"Juan\");",
+									"    });",
+									"",
+									"    pm.test(\"La property estado está presente, hay 2 posicisiones ocupada\", function(){",
+									"        pm.expect(body).to.have.property(\"estado\").eql([",
+									"                    [\"x\", \"o\", \" \"],",
+									"                    [\" \", \" \", \" \"],",
+									"                    [\" \", \" \", \" \"]",
+									"                ])",
+									"    });",
+									"});"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "PUT",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json",
+								"type": "default"
+							},
+							{
+								"key": "Origin",
+								"value": "{{origin}}",
+								"type": "default"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"jugador\": \"Pedro\",\n    \"columna\": 1,\n    \"fila\": 0\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{api_user_base_url}}/movimiento",
+							"host": [
+								"{{api_user_base_url}}"
+							],
+							"path": [
+								"movimiento"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "Win Game Vertical Tateti",
+			"item": [
+				{
+					"name": "New Tateti Game",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Nuevo juego empezado\", function () {",
+									"    pm.response.to.have.status(200);",
+									"    ",
+									"    const body = pm.response.json();",
+									"",
+									"    pm.test(\"Proximo turno corresponde al 1er jugador\", function(){",
+									"        pm.expect(body).to.have.property(\"turno\").eql(\"Juan\");",
+									"    });",
+									"",
+									"    pm.test(\"La property estado está presente, no hay posiciones ocupadas\", function(){",
+									"        pm.expect(body).to.have.property(\"estado\").eql([",
+									"                    [\" \", \" \", \" \"],",
+									"                    [\" \", \" \", \" \"],",
+									"                    [\" \", \" \", \" \"]",
+									"                ])",
+									"    });",
+									"});"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "PUT",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json",
+								"type": "default"
+							},
+							{
+								"key": "Origin",
+								"value": "{{origin}}",
+								"type": "default"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"jugadores\": [\n        \"Juan\",\n        \"Pedro\"\n    ]\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{api_user_base_url}}/empezar",
+							"host": [
+								"{{api_user_base_url}}"
+							],
+							"path": [
+								"empezar"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "First movement",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Primer movimiento\", function () {",
+									"    pm.test(\"Estado ok\", function(){",
+									"        pm.expect(pm.response).to.have.status(200);",
+									"    });",
+									"    ",
+									"    const body = pm.response.json();",
+									"",
+									"    pm.test(\"Proximo turno corresponde al 2do jugador\", function(){",
+									"        pm.expect(body).to.have.property(\"turno\").eql(\"Pedro\");",
+									"    });",
+									"",
+									"    pm.test(\"La property estado está presente, hay 1 posición ocupada\", function(){",
+									"        pm.expect(body).to.have.property(\"estado\").eql([",
+									"                    [\"x\", \" \", \" \"],",
+									"                    [\" \", \" \", \" \"],",
+									"                    [\" \", \" \", \" \"]",
+									"                ])",
+									"    });",
+									"});"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "PUT",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json",
+								"type": "default"
+							},
+							{
+								"key": "Origin",
+								"value": "{{origin}}",
+								"type": "default"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"jugador\": \"Juan\",\n    \"columna\": 0,\n    \"fila\": 0\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{api_user_base_url}}/movimiento",
+							"host": [
+								"{{api_user_base_url}}"
+							],
+							"path": [
+								"movimiento"
+							],
+							"query": [
+								{
+									"key": "",
+									"value": null,
+									"disabled": true
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Second movement",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Segundo movimiento\", function () {",
+									"    pm.test(\"Estado ok\", function(){",
+									"        pm.expect(pm.response).to.have.status(200);",
+									"    });",
+									"    ",
+									"    const body = pm.response.json();",
+									"",
+									"    pm.test(\"Proximo turno corresponde al 1er jugador\", function(){",
+									"        pm.expect(body).to.have.property(\"turno\").eql(\"Juan\");",
+									"    });",
+									"",
+									"    pm.test(\"La property estado está presente, hay 2 posicisiones ocupada\", function(){",
+									"        pm.expect(body).to.have.property(\"estado\").eql([",
+									"                    [\"x\", \"o\", \" \"],",
+									"                    [\" \", \" \", \" \"],",
+									"                    [\" \", \" \", \" \"]",
+									"                ])",
+									"    });",
+									"});"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "PUT",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json",
+								"type": "default"
+							},
+							{
+								"key": "Origin",
+								"value": "{{origin}}",
+								"type": "default"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"jugador\": \"Pedro\",\n    \"columna\": 1,\n    \"fila\": 0\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{api_user_base_url}}/movimiento",
+							"host": [
+								"{{api_user_base_url}}"
+							],
+							"path": [
+								"movimiento"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "3rd movement",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Tercer movimiento\", function () {",
+									"    pm.test(\"Estado ok\", function(){",
+									"        pm.expect(pm.response).to.have.status(200);",
+									"    });",
+									"    ",
+									"    const body = pm.response.json();",
+									"",
+									"    pm.test(\"Proximo turno corresponde al 2do jugador\", function(){",
+									"        pm.expect(body).to.have.property(\"turno\").eql(\"Pedro\");",
+									"    });",
+									"",
+									"    pm.test(\"La property estado está presente, hay 3 posicisiones ocupada\", function(){",
+									"        pm.expect(body).to.have.property(\"estado\").eql([",
+									"                    [\"x\", \"o\", \" \"],",
+									"                    [\"x\", \" \", \" \"],",
+									"                    [\" \", \" \", \" \"]",
+									"                ])",
+									"    });",
+									"});"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "PUT",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json",
+								"type": "default"
+							},
+							{
+								"key": "Origin",
+								"value": "{{origin}}",
+								"type": "default"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"jugador\": \"Juan\",\n    \"columna\": 0,\n    \"fila\": 1\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{api_user_base_url}}/movimiento",
+							"host": [
+								"{{api_user_base_url}}"
+							],
+							"path": [
+								"movimiento"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "4th movement",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Cuarto movimiento\", function () {",
+									"    pm.test(\"Estado ok\", function(){",
+									"        pm.expect(pm.response).to.have.status(200);",
+									"    });",
+									"    ",
+									"    const body = pm.response.json();",
+									"",
+									"    pm.test(\"Proximo turno corresponde al 1er jugador\", function(){",
+									"        pm.expect(body).to.have.property(\"turno\").eql(\"Juan\");",
+									"    });",
+									"",
+									"    pm.test(\"La property estado está presente, hay 4 posicisiones ocupada\", function(){",
+									"        pm.expect(body).to.have.property(\"estado\").eql([",
+									"                    [\"x\", \"o\", \" \"],",
+									"                    [\"x\", \"o\", \" \"],",
+									"                    [\" \", \" \", \" \"]",
+									"                ])",
+									"    });",
+									"});"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "PUT",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json",
+								"type": "default"
+							},
+							{
+								"key": "Origin",
+								"value": "{{origin}}",
+								"type": "default"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"jugador\": \"Pedro\",\n    \"columna\": 1,\n    \"fila\": 1\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{api_user_base_url}}/movimiento",
+							"host": [
+								"{{api_user_base_url}}"
+							],
+							"path": [
+								"movimiento"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "5th movement",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Quinto movimiento\", function () {",
+									"    pm.test(\"Estado ok\", function(){",
+									"        pm.expect(pm.response).to.have.status(200);",
+									"    });",
+									"    ",
+									"    const body = pm.response.json();",
+									"",
+									"    pm.test(\"Hay ganador\", function(){",
+									"        pm.expect(body).to.have.property(\"ganador\").eql(\"Juan\");",
+									"    });",
+									"",
+									"    pm.test(\"La property estado está presente\", function(){",
+									"        pm.expect(body).to.have.property(\"estado\").eql([",
+									"                    [\"x\", \"o\", \" \"],",
+									"                    [\"x\", \"o\", \" \"],",
+									"                    [\"x\", \" \", \" \"]",
+									"                ])",
+									"    });",
+									"});"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "PUT",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json",
+								"type": "default"
+							},
+							{
+								"key": "Origin",
+								"value": "{{origin}}",
+								"type": "default"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"jugador\": \"Juan\",\n    \"columna\": 0,\n    \"fila\": 2\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{api_user_base_url}}/movimiento",
+							"host": [
+								"{{api_user_base_url}}"
+							],
+							"path": [
+								"movimiento"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "No winner",
+			"item": [
+				{
+					"name": "New Tateti Game",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									""
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "PUT",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json",
+								"type": "default"
+							},
+							{
+								"key": "Origin",
+								"value": "{{origin}}",
+								"type": "default"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"jugadores\": [\n        \"Juan\",\n        \"Pedro\"\n    ]\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{api_user_base_url}}/empezar",
+							"host": [
+								"{{api_user_base_url}}"
+							],
+							"path": [
+								"empezar"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "First movement",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									""
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "PUT",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json",
+								"type": "default"
+							},
+							{
+								"key": "Origin",
+								"value": "{{origin}}",
+								"type": "default"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"jugador\": \"Juan\",\n    \"columna\": 0,\n    \"fila\": 0\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{api_user_base_url}}/movimiento",
+							"host": [
+								"{{api_user_base_url}}"
+							],
+							"path": [
+								"movimiento"
+							],
+							"query": [
+								{
+									"key": "",
+									"value": null,
+									"disabled": true
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Second movement",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									""
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "PUT",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json",
+								"type": "default"
+							},
+							{
+								"key": "Origin",
+								"value": "{{origin}}",
+								"type": "default"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"jugador\": \"Pedro\",\n    \"columna\": 1,\n    \"fila\": 0\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{api_user_base_url}}/movimiento",
+							"host": [
+								"{{api_user_base_url}}"
+							],
+							"path": [
+								"movimiento"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "3rd movement",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									""
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "PUT",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json",
+								"type": "default"
+							},
+							{
+								"key": "Origin",
+								"value": "{{origin}}",
+								"type": "default"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"jugador\": \"Juan\",\n    \"columna\": 0,\n    \"fila\": 1\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{api_user_base_url}}/movimiento",
+							"host": [
+								"{{api_user_base_url}}"
+							],
+							"path": [
+								"movimiento"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "4th movement",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									""
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "PUT",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json",
+								"type": "default"
+							},
+							{
+								"key": "Origin",
+								"value": "{{origin}}",
+								"type": "default"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"jugador\": \"Pedro\",\n    \"columna\": 0,\n    \"fila\": 2\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{api_user_base_url}}/movimiento",
+							"host": [
+								"{{api_user_base_url}}"
+							],
+							"path": [
+								"movimiento"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "5th movement",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									""
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "PUT",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json",
+								"type": "default"
+							},
+							{
+								"key": "Origin",
+								"value": "{{origin}}",
+								"type": "default"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"jugador\": \"Juan\",\n    \"columna\": 1,\n    \"fila\": 1\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{api_user_base_url}}/movimiento",
+							"host": [
+								"{{api_user_base_url}}"
+							],
+							"path": [
+								"movimiento"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "6th movement",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									""
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "PUT",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json",
+								"type": "default"
+							},
+							{
+								"key": "Origin",
+								"value": "{{origin}}",
+								"type": "default"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"jugador\": \"Pedro\",\n    \"columna\": 2,\n    \"fila\": 1\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{api_user_base_url}}/movimiento",
+							"host": [
+								"{{api_user_base_url}}"
+							],
+							"path": [
+								"movimiento"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "7th movement",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									""
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "PUT",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json",
+								"type": "default"
+							},
+							{
+								"key": "Origin",
+								"value": "{{origin}}",
+								"type": "default"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"jugador\": \"Juan\",\n    \"columna\": 2,\n    \"fila\": 0\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{api_user_base_url}}/movimiento",
+							"host": [
+								"{{api_user_base_url}}"
+							],
+							"path": [
+								"movimiento"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "8th movement",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									""
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "PUT",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json",
+								"type": "default"
+							},
+							{
+								"key": "Origin",
+								"value": "{{origin}}",
+								"type": "default"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"jugador\": \"Pedro\",\n    \"columna\": 2,\n    \"fila\": 2\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{api_user_base_url}}/movimiento",
+							"host": [
+								"{{api_user_base_url}}"
+							],
+							"path": [
+								"movimiento"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "9th movement",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Empate\", function () {",
+									"    pm.test(\"Estado ok\", function(){",
+									"        pm.expect(pm.response).to.have.status(200);",
+									"    });",
+									"    ",
+									"    const body = pm.response.json();",
+									"",
+									"    pm.test(\"No hay ganador, empate\", function(){",
+									"        pm.expect(body).to.have.property(\"ganador\").eql(\"empate\");",
+									"    });",
+									"",
+									"    pm.test(\"La property estado está presente\", function(){",
+									"        pm.expect(body).to.have.property(\"estado\").eql([",
+									"                    [\"x\", \"o\", \"x\"],",
+									"                    [\"x\", \"x\", \"o\"],",
+									"                    [\"o\", \"x\", \"o\"]",
+									"                ])",
+									"    });",
+									"});"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "PUT",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json",
+								"type": "default"
+							},
+							{
+								"key": "Origin",
+								"value": "{{origin}}",
+								"type": "default"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"jugador\": \"Juan\",\n    \"columna\": 1,\n    \"fila\": 2\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{api_user_base_url}}/movimiento",
+							"host": [
+								"{{api_user_base_url}}"
+							],
+							"path": [
+								"movimiento"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		}
+	],
+	"event": [
+		{
+			"listen": "prerequest",
+			"script": {
+				"type": "text/javascript",
+				"exec": [
+					""
+				]
+			}
+		},
+		{
+			"listen": "test",
+			"script": {
+				"type": "text/javascript",
+				"exec": [
+					""
+				]
+			}
+		}
+	],
+	"variable": [
+		{
+			"key": "base_url",
+			"value": "http://localhost:3000",
+			"type": "default"
+		},
+		{
+			"key": "api_user_base_url",
+			"value": "http://api-users.smauec.net:3000",
+			"type": "default"
+		},
+		{
+			"key": "origin",
+			"value": "http://www.smauec.net",
+			"type": "default"
+		}
+	]
+}
